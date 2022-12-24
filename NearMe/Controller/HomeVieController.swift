@@ -10,6 +10,8 @@ import MapKit
 
 class HomeVieController: UIViewController {
     
+    var locationManager : CLLocationManager?
+    
     //MARK: - UI Elements -
     lazy var mapView : MKMapView = {
         let mapView = MKMapView()
@@ -37,6 +39,10 @@ class HomeVieController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        locationManager = CLLocationManager()
+        locationManager?.delegate = self
+        locationManager?.requestLocation()
+        locationManager?.requestWhenInUseAuthorization()
         setupUI()
     }
     
@@ -65,7 +71,34 @@ class HomeVieController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    
+    private func checkLocationAuthorization () {
+        guard let locationManager = locationManager,
+              let location = locationManager.location else {return}
+        
+        switch locationManager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 800, longitudinalMeters: 800)
+            mapView.setRegion(region, animated: true)
+        case .denied:
+            print("Location services has been denied.")
+        case .notDetermined, .restricted:
+            print("Location cannot be determined or restricted.")
+        @unknown default:
+            print("Unknown error.")
+        }
+    }
 
 
 }
 
+extension HomeVieController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        checkLocationAuthorization()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error")
+    }
+}
