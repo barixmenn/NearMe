@@ -89,6 +89,7 @@ class HomeViewController: UIViewController {
         
         // clear all annotations
         mapView.removeAnnotations(mapView.annotations)
+        let annotationName = MKPointAnnotation()
         
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
@@ -98,7 +99,13 @@ class HomeViewController: UIViewController {
         search.start { response, error in
             
             guard let response = response, error == nil else { return }
+            let places = response.mapItems.map(PlaceAnnotation.init)
+            places.forEach { places in
+                self.mapView.addAnnotation(places)
+            }
             print(response.mapItems)
+            
+            
         }
         
     }
@@ -134,6 +141,8 @@ extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
+    
+
     
 }
 
