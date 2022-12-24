@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		607357472957628A00328C8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607357462957628A00328C8C /* AppDelegate.swift */; };
 		607357492957628A00328C8C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607357482957628A00328C8C /* SceneDelegate.swift */; };
-		6073574B2957628A00328C8C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6073574A2957628A00328C8C /* ViewController.swift */; };
-		6073574E2957628A00328C8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6073574C2957628A00328C8C /* Main.storyboard */; };
+		6073574B2957628A00328C8C /* HomeVieController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6073574A2957628A00328C8C /* HomeVieController.swift */; };
 		607357502957628C00328C8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6073574F2957628C00328C8C /* Assets.xcassets */; };
 		607357532957628C00328C8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607357512957628C00328C8C /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -19,8 +18,7 @@
 		607357432957628A00328C8C /* NearMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NearMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607357462957628A00328C8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		607357482957628A00328C8C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		6073574A2957628A00328C8C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		6073574D2957628A00328C8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6073574A2957628A00328C8C /* HomeVieController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVieController.swift; sourceTree = "<group>"; };
 		6073574F2957628C00328C8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		607357522957628C00328C8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		607357542957628C00328C8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -56,15 +54,30 @@
 		607357452957628A00328C8C /* NearMe */ = {
 			isa = PBXGroup;
 			children = (
-				607357462957628A00328C8C /* AppDelegate.swift */,
-				607357482957628A00328C8C /* SceneDelegate.swift */,
-				6073574A2957628A00328C8C /* ViewController.swift */,
-				6073574C2957628A00328C8C /* Main.storyboard */,
+				60BD5EFD2957A2FC0004BEA2 /* Controller */,
+				60BD5EFC2957A2DF0004BEA2 /* Files */,
 				6073574F2957628C00328C8C /* Assets.xcassets */,
 				607357512957628C00328C8C /* LaunchScreen.storyboard */,
 				607357542957628C00328C8C /* Info.plist */,
 			);
 			path = NearMe;
+			sourceTree = "<group>";
+		};
+		60BD5EFC2957A2DF0004BEA2 /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				607357462957628A00328C8C /* AppDelegate.swift */,
+				607357482957628A00328C8C /* SceneDelegate.swift */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
+		60BD5EFD2957A2FC0004BEA2 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6073574A2957628A00328C8C /* HomeVieController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +140,6 @@
 			files = (
 				607357532957628C00328C8C /* LaunchScreen.storyboard in Resources */,
 				607357502957628C00328C8C /* Assets.xcassets in Resources */,
-				6073574E2957628A00328C8C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6073574B2957628A00328C8C /* ViewController.swift in Sources */,
+				6073574B2957628A00328C8C /* HomeVieController.swift in Sources */,
 				607357472957628A00328C8C /* AppDelegate.swift in Sources */,
 				607357492957628A00328C8C /* SceneDelegate.swift in Sources */,
 			);
@@ -147,14 +159,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		6073574C2957628A00328C8C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6073574D2957628A00328C8C /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		607357512957628C00328C8C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -290,11 +294,15 @@
 				DEVELOPMENT_TEAM = WL3K4A7DH8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NearMe/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to find places near you";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to find places near you";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -318,11 +326,15 @@
 				DEVELOPMENT_TEAM = WL3K4A7DH8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NearMe/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to find places near you";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to find places near you";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
