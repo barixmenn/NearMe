@@ -11,6 +11,8 @@ import MapKit
 class HomeViewController: UIViewController {
 
     var locationManager: CLLocationManager?
+    var chosenLatitude = Double()
+    var chosenLongitude = Double()
 
     lazy var mapView: MKMapView = {
         let map = MKMapView()
@@ -44,8 +46,12 @@ class HomeViewController: UIViewController {
         locationManager?.requestAlwaysAuthorization()
         locationManager?.requestLocation()
         
+        
+        
         setupUI()
     }
+   
+  //MARK: - Functions -
     
     private func setupUI() {
         
@@ -89,7 +95,6 @@ class HomeViewController: UIViewController {
         
         // clear all annotations
         mapView.removeAnnotations(mapView.annotations)
-        let annotationName = MKPointAnnotation()
         
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
@@ -103,11 +108,24 @@ class HomeViewController: UIViewController {
             places.forEach { places in
                 self.mapView.addAnnotation(places)
             }
-            print(response.mapItems)
+            self.presentPlaces(places: places)
             
             
         }
+    }
+    
+    private func presentPlaces(places: [PlaceAnnotation]) {
+        guard let location = locationManager,
+              let userLocation = location.location else {return}
+        let placesTVC = PlacesTableViewController(userLocation: userLocation, places: places)
         
+        placesTVC.modalPresentationStyle = .pageSheet
+        
+        if let sheet = placesTVC.sheetPresentationController {
+            sheet.prefersGrabberVisible = true
+            sheet.detents = [.medium(), .large()]
+            present(placesTVC, animated: true)
+        }
     }
 }
 
