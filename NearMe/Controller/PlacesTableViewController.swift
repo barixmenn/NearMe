@@ -26,6 +26,15 @@ class PlacesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return places.count
     }
+    
+    private func calculateDistance(from: CLLocation, to: CLLocation) -> CLLocationDistance {
+        from.distance(from: to)
+    }
+    
+    private func formatDistanceForDisplay(_ distance: CLLocationDistance) -> String {
+        let meters = Measurement(value: distance, unit: UnitLength.meters)
+        return meters.converted(to: .miles).formatted()
+    }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath)
         let place = places[indexPath.row]
@@ -33,7 +42,7 @@ class PlacesTableViewController: UITableViewController {
         //cell config
         var content = cell.defaultContentConfiguration()
         content.text = place.name
-        content.secondaryText = place.title
+        content.secondaryText = formatDistanceForDisplay(calculateDistance(from: userLocation, to: place.location))
         
         cell.contentConfiguration = content
         return cell 
