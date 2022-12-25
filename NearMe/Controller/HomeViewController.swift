@@ -11,11 +11,11 @@ import MapKit
 class HomeViewController: UIViewController {
 
     var locationManager: CLLocationManager?
-    var chosenLatitude = Double()
-    var chosenLongitude = Double()
+    private var places: [PlaceAnnotation] = []
 
     lazy var mapView: MKMapView = {
         let map = MKMapView()
+        map.delegate = self
         map.showsUserLocation = true
         map.translatesAutoresizingMaskIntoConstraints = false
         return map
@@ -23,6 +23,7 @@ class HomeViewController: UIViewController {
     
     lazy var searchTextField: UITextField = {
         let searchTextField = UITextField()
+        searchTextField.returnKeyType = .go
         searchTextField.layer.cornerRadius = 10
         searchTextField.delegate = self
         searchTextField.clipsToBounds = true
@@ -46,12 +47,8 @@ class HomeViewController: UIViewController {
         locationManager?.requestAlwaysAuthorization()
         locationManager?.requestLocation()
         
-        
-        
         setupUI()
     }
-   
-  //MARK: - Functions -
     
     private func setupUI() {
         
@@ -59,19 +56,21 @@ class HomeViewController: UIViewController {
         view.addSubview(mapView)
         
         view.bringSubviewToFront(searchTextField)
-        
-        // add constraints to search text field
-        searchTextField.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        searchTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        searchTextField.widthAnchor.constraint(equalToConstant: view.bounds.size.width/1.2).isActive = true
-        searchTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 60).isActive = true
-        searchTextField.returnKeyType = .go
-        
-        // add constraints to the mapView
-        mapView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        mapView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        mapView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        mapView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+   
+        NSLayoutConstraint.activate([
+            // add constraints to search text field
+            searchTextField.heightAnchor.constraint(equalToConstant: 44),
+            searchTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            searchTextField.widthAnchor.constraint(equalToConstant: view.bounds.size.width/1.2),
+            searchTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            
+            // add constraints to the mapView
+            mapView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            mapView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            mapView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            mapView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+
     }
     
     private func checkLocationAuthorization() {
@@ -91,6 +90,22 @@ class HomeViewController: UIViewController {
         }
     }
     
+    private func presentPlacesSheet(places: [PlaceAnnotation]) {
+        
+        guard let locationManager = locationManager,
+        let userLocation = locationManager.location
+        else { return }
+        
+        let placesTVC = PlacesTableViewController(userLocation: userLocation, places: places)
+        placesTVC.modalPresentationStyle = .pageSheet
+        
+        if let sheet = placesTVC.sheetPresentationController {
+            sheet.prefersGrabberVisible = true
+            sheet.detents = [.medium(), .large()]
+            present(placesTVC, animated: true)
+        }
+    }
+    
     private func findNearbyPlaces(by query: String) {
         
         // clear all annotations
@@ -101,31 +116,21 @@ class HomeViewController: UIViewController {
         request.region = mapView.region
         
         let search = MKLocalSearch(request: request)
-        search.start { response, error in
+        search.start { [weak self] response, error in
             
             guard let response = response, error == nil else { return }
-            let places = response.mapItems.map(PlaceAnnotation.init)
-            places.forEach { places in
-                self.mapView.addAnnotation(places)
+            
+            self?.places = response.mapItems.map(PlaceAnnotation.init)
+            self?.places.forEach { place in
+                self?.mapView.addAnnotation(place)
             }
-            self.presentPlaces(places: places)
             
-            
+            if let places = self?.places {
+                self?.presentPlacesSheet(places: places)
+            }
+           
         }
-    }
-    
-    private func presentPlaces(places: [PlaceAnnotation]) {
-        guard let location = locationManager,
-              let userLocation = location.location else {return}
-        let placesTVC = PlacesTableViewController(userLocation: userLocation, places: places)
         
-        placesTVC.modalPresentationStyle = .pageSheet
-        
-        if let sheet = placesTVC.sheetPresentationController {
-            sheet.prefersGrabberVisible = true
-            sheet.detents = [.medium(), .large()]
-            present(placesTVC, animated: true)
-        }
     }
 }
 
@@ -143,8 +148,32 @@ extension HomeViewController: UITextFieldDelegate {
         
         return true
     }
+}
+
+extension HomeViewController: MKMapViewDelegate {
+    
+    private func clearAllSelections() {
+        self.places = self.places.map { place in
+            place.isSelected = false
+            return place
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
+        
+        // clear all selections
+        clearAllSelections()
+        
+        guard let selectionAnnotation = annotation as? PlaceAnnotation else { return }
+        let placeAnnotation = self.places.first(where: { $0.id == selectionAnnotation.id })
+        placeAnnotation?.isSelected = true
+        
+        presentPlacesSheet(places: self.places)
+        
+    }
     
 }
+
 
 extension HomeViewController: CLLocationManagerDelegate {
     
@@ -160,8 +189,4 @@ extension HomeViewController: CLLocationManagerDelegate {
         print(error)
     }
     
-
-    
 }
-
-
