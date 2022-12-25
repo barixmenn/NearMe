@@ -46,7 +46,6 @@
 		6073573A2957628A00328C8C = {
 			isa = PBXGroup;
 			children = (
-				6015714B2958E0C8002BD62E /* PlaceDetailViewController.swift */,
 				607357452957628A00328C8C /* NearMe */,
 				607357442957628A00328C8C /* Products */,
 			);
@@ -86,6 +85,7 @@
 		60BD5EFD2957A2FC0004BEA2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6015714B2958E0C8002BD62E /* PlaceDetailViewController.swift */,
 				6073574A2957628A00328C8C /* HomeViewController.swift */,
 				6015714829588EC4002BD62E /* PlacesTableViewController.swift */,
 			);
